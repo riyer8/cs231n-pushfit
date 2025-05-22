@@ -1,0 +1,5 @@
+datasets/exercise_video_data
+datasets/exercise_json_data
+__pycache__
+
+.env
