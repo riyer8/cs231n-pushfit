@@ -1,3 +1,7 @@
+'''
+Utilizes the pose_estimation in models to iterate through all of the exercise video data
+and convert data into json file.
+'''
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -9,6 +13,7 @@ output_json_path = "datasets/exercise_json_data"
 
 os.makedirs(output_json_path, exist_ok=True)
 
+# hardcoded maximum number of videos for each type
 exercise_data = {
     "bench_press": 61,
     "lat_pulldown": 51,
@@ -26,7 +31,7 @@ for exercise, count in exercise_data.items():
 
         output_path = os.path.join(output_dir, file_name.replace(".mp4", ".json"))
 
-        # Check if video exists
+        # check if video exists and convert to json
         if os.path.exists(video_path):
             print(f"🚀 Processing {video_path}")
             pose_estimation(video_path, file_name, output_path)

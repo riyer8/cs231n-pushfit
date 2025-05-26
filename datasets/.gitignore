@@ -1,0 +1,5 @@
+exercise_video_data/
+exercise_json_data/
+gym_exercise_data/
+lstm_exercise_classification_push_up/
+lstm_exercise_extraction.py

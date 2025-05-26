@@ -4,9 +4,9 @@ person performing the exercise are.
 
 Utilizes the movenet_lightning.tflite interpreter and stores the keypoints
 '''
-import cv2
+import cv2 # type: ignore
 import numpy as np
-import tensorflow as tf
+import tensorflow as tf # type: ignore
 import json
 
 def pose_estimation(video_path, file_name, output_json):
