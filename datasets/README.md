@@ -6,26 +6,4 @@ The LSTM Exercise classification: https://www.kaggle.com/datasets/mohamadashrafs
 
 The gym workout/exercise video from: https://www.kaggle.com/datasets/philosopher0808/gym-workoutexercises-video/
 
-```
-datasets/
-├── exercise_json_data/
-│ ├── bench_press/
-│ ├── lat_pulldown/
-│ ├── push_up/
-│ └── tricep_pushdown/
-├── exercise_video_data/
-│ ├── bench_press/
-│ ├── lat_pulldown/
-│ ├── push_up/
-│ └── tricep_pushdown/
-├── gym_exercise_data/
-│ ├── bench_press/
-│ ├── lat_pulldown/
-│ ├── push_up/
-│ └── tricep_pushdown/
-├── lstm_exercise_classification_push_up/
-│ ├── Correct sequence/
-│ ├── labels/
-│ └── Wrong sequence/
-└── video_data_extraction.py
-```
+UCF101 converted files: https://www.crcv.ucf.edu/data/UCF101.php#Results_on_UCF101
