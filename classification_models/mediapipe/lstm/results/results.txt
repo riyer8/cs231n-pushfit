@@ -1,0 +1,6 @@
+Training accuracy: 0.9292
+Validation accuracy: 0.7170
+Total accuracy (val set): 0.7170
+
+Training samples: 212 (Correct: 108, Wrong: 104)
+Validation samples: 53 (Correct: 32, Wrong: 21)
