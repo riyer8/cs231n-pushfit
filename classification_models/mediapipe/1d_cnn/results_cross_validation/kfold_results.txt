@@ -1,0 +1,38 @@
+Fold 1:
+  Train accuracy: 0.8679
+  Val accuracy:   0.7736
+  Train samples: Correct=112, Wrong=100
+  Val samples:   Correct=28, Wrong=25
+
+Fold 2:
+  Train accuracy: 0.8585
+  Val accuracy:   0.7547
+  Train samples: Correct=112, Wrong=100
+  Val samples:   Correct=28, Wrong=25
+
+Fold 3:
+  Train accuracy: 0.9057
+  Val accuracy:   0.8113
+  Train samples: Correct=112, Wrong=100
+  Val samples:   Correct=28, Wrong=25
+
+Fold 4:
+  Train accuracy: 0.8443
+  Val accuracy:   0.7358
+  Train samples: Correct=112, Wrong=100
+  Val samples:   Correct=28, Wrong=25
+
+Fold 5:
+  Train accuracy: 0.8538
+  Val accuracy:   0.8868
+  Train samples: Correct=112, Wrong=100
+  Val samples:   Correct=28, Wrong=25
+
+=== Overall ===
+Average Train Accuracy: 0.8660
+Average Validation Accuracy: 0.7925
+Total Validation Loss: 0.4586
+
+Confusion Matrix (Aggregated):
+[[ 95  30]
+ [ 25 115]]

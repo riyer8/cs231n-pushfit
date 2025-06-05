@@ -1,0 +1,5 @@
+Training accuracy: 0.8585
+Validation accuracy: 0.8113
+
+Training samples: 212 (Correct: 112, Wrong: 100)
+Validation samples: 53 (Correct: 28, Wrong: 25)

@@ -1,0 +1,7 @@
+=== Cross-Validation Summary ===
+Average Train Accuracy: 0.8811
+Average Val Accuracy:   0.7585
+
+Aggregated Confusion Matrix:
+[[100  25]
+ [ 27 113]]

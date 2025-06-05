@@ -1,0 +1,11 @@
+Train Accuracy: 1.0000
+Validation Accuracy: 0.8679
+
+              precision    recall  f1-score   support
+
+       wrong       1.00      0.72      0.84        25
+     correct       0.80      1.00      0.89        28
+
+    accuracy                           0.87        53
+   macro avg       0.90      0.86      0.86        53
+weighted avg       0.89      0.87      0.86        53

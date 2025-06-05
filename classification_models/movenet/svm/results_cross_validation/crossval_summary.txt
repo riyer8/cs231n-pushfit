@@ -1,0 +1,18 @@
+Fold 1 Train Accuracy: 0.7028
+Fold 1 Val Accuracy:   0.6415
+
+Fold 2 Train Accuracy: 0.5991
+Fold 2 Val Accuracy:   0.4151
+
+Fold 3 Train Accuracy: 0.6651
+Fold 3 Val Accuracy:   0.6415
+
+Fold 4 Train Accuracy: 0.6368
+Fold 4 Val Accuracy:   0.6226
+
+Fold 5 Train Accuracy: 0.6462
+Fold 5 Val Accuracy:   0.6038
+
+Average Train Accuracy: 0.6500
+Average Val Accuracy:   0.5849
+Validation Std Dev:     0.0861

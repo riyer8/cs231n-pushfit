@@ -1,0 +1,36 @@
+Fold 1:
+  Training accuracy:   0.5566
+  Validation accuracy: 0.4717
+  Total accuracy:      0.4717
+  Training samples:    212 (Correct: 112, Wrong: 100)
+  Validation samples:  53 (Correct: 28, Wrong: 25)
+
+Fold 2:
+  Training accuracy:   0.6132
+  Validation accuracy: 0.5472
+  Total accuracy:      0.5472
+  Training samples:    212 (Correct: 112, Wrong: 100)
+  Validation samples:  53 (Correct: 28, Wrong: 25)
+
+Fold 3:
+  Training accuracy:   0.5755
+  Validation accuracy: 0.5849
+  Total accuracy:      0.5849
+  Training samples:    212 (Correct: 112, Wrong: 100)
+  Validation samples:  53 (Correct: 28, Wrong: 25)
+
+Fold 4:
+  Training accuracy:   0.6840
+  Validation accuracy: 0.6415
+  Total accuracy:      0.6415
+  Training samples:    212 (Correct: 112, Wrong: 100)
+  Validation samples:  53 (Correct: 28, Wrong: 25)
+
+Fold 5:
+  Training accuracy:   0.4953
+  Validation accuracy: 0.6981
+  Total accuracy:      0.6981
+  Training samples:    212 (Correct: 112, Wrong: 100)
+  Validation samples:  53 (Correct: 28, Wrong: 25)
+
+Average Validation Accuracy over 5 folds: 0.5887
