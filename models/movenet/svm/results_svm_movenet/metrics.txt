@@ -1,0 +1,11 @@
+Training Accuracy: 0.6651
+Validation Accuracy: 0.5660
+Total Accuracy: 0.6453
+
+Training Samples: 212
+  Correct: 112
+  Wrong: 100
+Validation Samples: 53
+  Correct: 28
+  Wrong: 25
+Total Samples: 265

@@ -9,3 +9,6 @@ mmpose==0.21.0
 scikit-learn
 torch
 seaborn
+scipy
+time
+json

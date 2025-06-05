@@ -1,9 +1,12 @@
 # Datasets
 
-This file consists of gym datasets provided by this link: https://www.kaggle.com/datasets/hasyimabdillah/workoutfitness-video/data
+## Data Collection
 
-The LSTM Exercise classification: https://www.kaggle.com/datasets/mohamadashrafsalama/pushup?resource=download
+- [Workout/Exercises Video by Hasyim Abdillah](https://www.kaggle.com/datasets/hasyimabdillah/workoutfitness-video/data)
+- [LSTM Exercise Classification: Push Up Videos by Mohamad Ashraf Salama](https://www.kaggle.com/datasets/mohamadashrafsalama/pushup?resource=download)
+- [Gym Workout Exercises Video by philosopher0808](https://www.kaggle.com/datasets/philosopher0808/gym-workoutexercises-video/)
 
-The gym workout/exercise video from: https://www.kaggle.com/datasets/philosopher0808/gym-workoutexercises-video/
+## Pose Estimation Methods
 
-UCF101 converted files: https://www.crcv.ucf.edu/data/UCF101.php#Results_on_UCF101
+- MediaPipe Pose
+- MoveNet
