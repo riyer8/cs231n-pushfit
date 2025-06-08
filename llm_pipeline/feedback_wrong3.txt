@@ -1,0 +1,8 @@
+⚠️ Push-up technique analysis (Incorrect form detected)
+
+left_shoulder-left_elbow-left_wrist angle: 113.67 degrees
+right_shoulder-right_elbow-right_wrist angle: 115.81 degrees
+left_hip-left_knee-left_ankle angle: 174.75 degrees
+right_hip-right_knee-right_ankle angle: 175.58 degrees
+left_elbow-left_shoulder-left_hip angle: 23.06 degrees
+right_elbow-right_shoulder-right_hip angle: 31.39 degrees

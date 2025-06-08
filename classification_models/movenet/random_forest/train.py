@@ -6,6 +6,7 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 from sklearn.model_selection import train_test_split  # type: ignore
 import matplotlib.pyplot as plt
 import seaborn as sns  # type: ignore
+import joblib #type: ignore
 
 # Constants
 DATA_ROOT = "datasets/json/movenet"
@@ -77,6 +78,10 @@ def main():
     print("🌲 Training Random Forest...")
     clf = RandomForestClassifier(n_estimators=100, random_state=42)
     clf.fit(X_train, y_train)
+
+    # After training
+    joblib.dump(clf, os.path.join(RESULTS_DIR, "random_forest_model.joblib"))
+    print("💾 Model saved to results/random_forest_model.joblib")
 
     # Predictions
     y_train_pred = clf.predict(X_train)
