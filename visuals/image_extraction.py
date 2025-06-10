@@ -3,9 +3,9 @@
 import cv2 # type: ignore
 import os
 
-VIDEO_PATH = "visuals/movenet.mp4"
-OUTPUT_IMAGE_PATH = "visuals/movenet_image.jpg"
-TARGET_TIME_SECONDS = 1.0
+VIDEO_PATH = "visuals/classification_images/wrong3.mp4"
+OUTPUT_IMAGE_PATH = "visuals/classification_images/wrong3.jpg"
+TARGET_TIME_SECONDS = 2.0
 
 os.makedirs(os.path.dirname(OUTPUT_IMAGE_PATH), exist_ok=True)
 cap = cv2.VideoCapture(VIDEO_PATH)
