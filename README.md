@@ -83,3 +83,7 @@ All videos are in `.mp4` format. Pose keypoints are extracted and stored in `.js
 - MediaPipe + 1D CNN also performs competitively at 88.68%
 - Random Forest consistently performs well across different estimators
 - Cross-validation confirms model generalization
+
+# CS 231N Poster
+
+![CS 231N Final Poster](visuals/CS%20231N%20Poster.jpg)

@@ -3,18 +3,15 @@ from dotenv import load_dotenv
 import os
 from feature_extraction import analyze_video_pose
 
-# Constants
 DEFAULT_MODEL = "models/gemini-1.5-flash"
 PROMPT_FILE = "llm_pipeline/prompt_engineering.txt"
 OUTPUT_FILE = "llm_pipeline/output.txt"
 
-# Load environment variables
 load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 if not api_key:
     raise RuntimeError("GOOGLE_API_KEY not found (set env var or .env file).")
 
-# Configure Gemini
 genai.configure(api_key=api_key)
 
 def load_text(path):
