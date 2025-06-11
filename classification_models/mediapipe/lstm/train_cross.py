@@ -8,12 +8,10 @@ from sklearn.model_selection import StratifiedKFold  # type: ignore
 import tensorflow as tf  # type: ignore
 from tensorflow.keras import layers, models, preprocessing  # type: ignore
 
-# --- Setup results directory ---
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 RESULTS_DIR = os.path.join(CURRENT_DIR, "results_lstm_cv")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
-# --- Constants ---
 DATA_ROOT = "datasets/json/mediapipe"
 LABELS = {"correct": 1, "wrong": 0}
 NUM_KEYPOINTS = 33
@@ -117,7 +115,6 @@ def main():
             verbose=0
         )
 
-        # Get final training and validation accuracy from history
         train_acc = history.history['accuracy'][-1]
         val_acc = history.history['val_accuracy'][-1]
 
@@ -127,11 +124,9 @@ def main():
         print(f"✅ Fold {fold_idx+1} Training Accuracy:   {train_acc:.4f}")
         print(f"✅ Fold {fold_idx+1} Validation Accuracy: {val_acc:.4f}")
 
-        # Predict on validation set
         y_val_pred_prob = model.predict(X_val).flatten()
         y_val_pred = (y_val_pred_prob >= 0.5).astype(int)
 
-        # Confusion Matrix and Loss Curve
         cm = confusion_matrix(y_val, y_val_pred)
         plot_confusion_matrix(cm, fold_idx)
         plot_loss_curve(history, fold_idx)
@@ -141,7 +136,6 @@ def main():
     avg_val_acc = np.mean(all_fold_val_accuracies)
     std_val_acc = np.std(all_fold_val_accuracies)
 
-    # Save results to file
     results_txt = os.path.join(RESULTS_DIR, "crossval_results.txt")
     with open(results_txt, "w") as f:
         for i in range(N_SPLITS):

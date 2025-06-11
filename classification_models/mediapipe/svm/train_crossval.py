@@ -7,7 +7,6 @@ from sklearn.svm import SVC  # type: ignore
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score  # type: ignore
 from sklearn.model_selection import StratifiedKFold  # type: ignore
 
-# Constants
 DATA_ROOT = "datasets/json/mediapipe"
 LABELS = {"correct": 1, "wrong": 0}
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -88,7 +87,6 @@ def main():
         cm = confusion_matrix(y_val, y_val_pred)
         plot_confusion_matrix(cm, fold_idx)
 
-        # Save per-fold classification report
         report_path = os.path.join(RESULTS_DIR, f"classification_report_fold_{fold_idx+1}.txt")
         with open(report_path, "w") as f:
             f.write(classification_report(y_val, y_val_pred, target_names=["wrong", "correct"]))
@@ -99,7 +97,6 @@ def main():
     print(f"\n📊 Cross-validation complete.")
     print(f"Average Accuracy: {avg_acc:.4f} ± {std_acc:.4f}")
 
-    # Save final summary
     summary_path = os.path.join(RESULTS_DIR, "crossval_results.txt")
     with open(summary_path, "w") as f:
         for i, acc in enumerate(all_fold_accuracies):

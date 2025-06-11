@@ -7,12 +7,10 @@ from sklearn.metrics import confusion_matrix, accuracy_score  # type: ignore
 from sklearn.model_selection import StratifiedKFold  # type: ignore
 from tensorflow.keras import layers, models, preprocessing  # type: ignore
 
-# --- Setup results directory ---
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 RESULTS_DIR = os.path.join(CURRENT_DIR, "results")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
-# --- Constants ---
 DATA_ROOT = "datasets/json/movenet"
 LABELS = {"correct": 1, "wrong": 0}
 NUM_KEYPOINTS = 17
@@ -108,7 +106,6 @@ def main():
         print(f"  ➤ Validation accuracy: {val_acc:.4f}")
         print(f"  ➤ Total fold accuracy: {total_acc:.4f}")
 
-        # Loss curve
         plt.figure(figsize=(8, 5))
         plt.plot(history.history['loss'], label='Training Loss')
         plt.plot(history.history['val_loss'], label='Validation Loss')
@@ -120,7 +117,6 @@ def main():
         plt.savefig(os.path.join(RESULTS_DIR, f"fold_{fold}_loss_curve.png"))
         plt.close()
 
-        # Confusion matrix
         cm = confusion_matrix(y_val, y_val_pred)
         plt.figure(figsize=(6, 5))
         sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=['wrong', 'correct'], yticklabels=['wrong', 'correct'])
@@ -145,7 +141,6 @@ def main():
             "val_wrong": val_wrong
         })
 
-    # Save results summary
     results_txt = os.path.join(RESULTS_DIR, "results.txt")
     with open(results_txt, "w") as f:
         for result in fold_results:

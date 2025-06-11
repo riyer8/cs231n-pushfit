@@ -7,17 +7,15 @@ from sklearn.metrics import confusion_matrix, accuracy_score # type: ignore
 from sklearn.model_selection import train_test_split # type: ignore
 from tensorflow.keras import layers, models, preprocessing # type: ignore
 
-# --- Setup results directory ---
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 RESULTS_DIR = os.path.join(CURRENT_DIR, "results")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
-# --- Constants ---
 DATA_ROOT = "datasets/json/movenet"
 LABELS = {"correct": 1, "wrong": 0}
-NUM_KEYPOINTS = 17  # MoveNet keypoints
-FEATURE_DIM = NUM_KEYPOINTS * 2  # x, y for each keypoint
-MAX_SEQ_LEN = 50  # Max number of frames per sequence
+NUM_KEYPOINTS = 17
+FEATURE_DIM = NUM_KEYPOINTS * 2
+MAX_SEQ_LEN = 50
 
 def extract_sequence_from_json(json_path):
     with open(json_path, "r") as f:
@@ -27,7 +25,7 @@ def extract_sequence_from_json(json_path):
     for frame in data:
         keypoints = frame.get("keypoints", [])
         if len(keypoints) != NUM_KEYPOINTS:
-            continue  # Skip if unexpected number of keypoints
+            continue
         flattened = []
         for kp in keypoints:
             flattened.extend([kp["x"], kp["y"]])
@@ -121,7 +119,7 @@ def main():
     def breakdown_by_class(y_array):
         unique, counts = np.unique(y_array, return_counts=True)
         d = dict(zip(unique, counts))
-        return d.get(1, 0), d.get(0, 0)  # correct, wrong
+        return d.get(1, 0), d.get(0, 0)
 
     train_correct, train_wrong = breakdown_by_class(y_train)
     val_correct, val_wrong = breakdown_by_class(y_val)

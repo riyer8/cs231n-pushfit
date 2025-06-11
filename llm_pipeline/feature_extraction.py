@@ -1,10 +1,11 @@
 import os
 import json
 import numpy as np
-from classification import predict_single_video  # Assuming this returns "correct" or "wrong"
+from classification import predict_single_video
 from math import atan2, degrees
+from movenet import extract_keypoints_to_json
 
-# Constants
+# keypoint names from movenet
 KEYPOINT_NAMES = [
     "nose", "left_eye", "right_eye", "left_ear", "right_ear",
     "left_shoulder", "right_shoulder", "left_elbow", "right_elbow",
@@ -12,7 +13,7 @@ KEYPOINT_NAMES = [
     "left_knee", "right_knee", "left_ankle", "right_ankle"
 ]
 
-# Joints of interest for angle calculation
+# joints to calculate
 ANGLES_TO_COMPUTE = [
     ("left_shoulder", "left_elbow", "left_wrist"),
     ("right_shoulder", "right_elbow", "right_wrist"),
@@ -22,8 +23,11 @@ ANGLES_TO_COMPUTE = [
     ("right_elbow", "right_shoulder", "right_hip"),
 ]
 
+VIDEO_PATH = "llm_pipeline/wrong3.mp4"
+KEYPOINTS_OUTPUT_PATH = "llm_pipeline/keypoints_wrong3.json"
+
+# angle between these three points
 def calculate_angle(a, b, c):
-    """Calculates angle between three points in degrees."""
     a = np.array(a)
     b = np.array(b)
     c = np.array(c)
@@ -35,6 +39,7 @@ def calculate_angle(a, b, c):
     angle = np.arccos(np.clip(cosine_angle, -1.0, 1.0))
     return degrees(angle)
 
+# keypoints from json file
 def extract_keypoints_from_json(json_path):
     with open(json_path, "r") as f:
         data = json.load(f)
@@ -58,7 +63,6 @@ def compute_angles_over_video(all_keypoints):
                 angle = calculate_angle(frame[a], frame[b], frame[c])
                 angles_summary[f"{a}-{b}-{c}"].append(angle)
 
-    # Average over all frames
     averaged = {
         joint: round(np.mean(values), 2) if values else None
         for joint, values in angles_summary.items()
@@ -85,10 +89,11 @@ def analyze_video_pose(json_path, output_txt_path):
         write_analysis_to_txt(angles, output_txt_path)
     else:
         print("✅ Push-up form is correct. No further analysis needed.")
+    
+    return output_txt_path
 
-# Example usage
 if __name__ == "__main__":
-    test_json_path = "llm_pipeline/keypoints_wrong3.json"
-    output_txt = "llm_pipeline/feedback_wrong3.txt"
-    os.makedirs(os.path.dirname(output_txt), exist_ok=True)
-    analyze_video_pose(test_json_path, output_txt)
+    JSON_PATH = extract_keypoints_to_json(VIDEO_PATH, KEYPOINTS_OUTPUT_PATH)
+    OUTPUT_TXT = "llm_pipeline/feedback_wrong3.txt"
+    os.makedirs(os.path.dirname(OUTPUT_TXT), exist_ok=True)
+    output_txt_path = analyze_video_pose(JSON_PATH, OUTPUT_TXT)

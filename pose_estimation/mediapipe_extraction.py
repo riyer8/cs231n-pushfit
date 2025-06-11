@@ -57,7 +57,7 @@ def extract_pose_from_video(video_path, output_json_path, overlay=False):
     print(f"✅ Saved pose data: {output_json_path}")
 
 def process_all_videos():
-    start_time = time.time()  # Start timing here
+    start_time = time.time()
 
     for label in ["correct", "wrong"]:
         input_dir = os.path.join(DATA_ROOT, label)
@@ -71,7 +71,7 @@ def process_all_videos():
                 extract_pose_from_video(video_path, output_path, overlay=False)
 
     elapsed_time = time.time() - start_time
-    print(f"⏱️ Total processing time for all videos: {elapsed_time:.2f} seconds")
+    print(f"⏱️ MediaPipe Processing time: {elapsed_time:.2f} seconds")
 
 if __name__ == "__main__":
     process_all_videos()

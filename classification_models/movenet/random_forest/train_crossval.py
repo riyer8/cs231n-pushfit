@@ -7,7 +7,6 @@ from sklearn.ensemble import RandomForestClassifier  # type: ignore
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score  # type: ignore
 from sklearn.model_selection import StratifiedKFold  # type: ignore
 
-# Constants
 DATA_ROOT = "datasets/json/movenet"
 LABELS = {"correct": 1, "wrong": 0}
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -16,7 +15,6 @@ os.makedirs(RESULTS_DIR, exist_ok=True)
 
 N_SPLITS = 5
 RANDOM_STATE = 42
-
 
 def extract_features_from_json(json_path):
     with open(json_path, "r") as f:
@@ -27,7 +25,6 @@ def extract_features_from_json(json_path):
     for frame in data:
         keypoints = frame.get("keypoints", [])
 
-        # Ensure exactly 17 keypoints
         if len(keypoints) < 17:
             keypoints += [{"x": 0, "y": 0}] * (17 - len(keypoints))
         elif len(keypoints) > 17:
@@ -107,14 +104,12 @@ def main():
         cm = confusion_matrix(y_val, y_val_pred)
         plot_confusion_matrix(cm, fold_idx)
 
-        # Save classification report
         report_path = os.path.join(RESULTS_DIR, f"classification_report_fold_{fold_idx + 1}.txt")
         with open(report_path, "w") as f:
             f.write(f"Train Accuracy: {train_acc:.4f}\n")
             f.write(f"Validation Accuracy: {val_acc:.4f}\n\n")
             f.write(classification_report(y_val, y_val_pred, target_names=["wrong", "correct"]))
 
-    # Summary
     avg_train = np.mean(train_accuracies)
     avg_val = np.mean(val_accuracies)
     std_val = np.std(val_accuracies)

@@ -84,7 +84,7 @@ def process_all_videos():
                 extract_pose_from_video(video_path, output_path, display=False)
 
     elapsed_time = time.time() - start_time
-    print(f"⏱️ Total processing time for all videos: {elapsed_time:.2f} seconds")
+    print(f"⏱️ MoveNet Processing Time: {elapsed_time:.2f} seconds")
 
 if __name__ == "__main__":
     process_all_videos()

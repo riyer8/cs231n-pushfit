@@ -8,16 +8,14 @@ from sklearn.model_selection import StratifiedKFold  # type: ignore
 import tensorflow as tf  # type: ignore
 from tensorflow.keras import layers, models  # type: ignore
 
-# --- Setup results directory ---
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 RESULTS_DIR = os.path.join(CURRENT_DIR, "results_cv")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
-# --- Constants ---
 DATA_ROOT = "datasets/json/movenet"
 LABELS = {"correct": 1, "wrong": 0}
 NUM_KEYPOINTS = 17
-FEATURE_DIM = NUM_KEYPOINTS * 2  # x and y for each keypoint
+FEATURE_DIM = NUM_KEYPOINTS * 2
 EPOCHS = 100
 BATCH_SIZE = 16
 N_SPLITS = 5
@@ -89,7 +87,7 @@ def main():
     X, y = load_dataset()
     print(f"✅ Loaded {len(X)} samples.")
 
-    X = X[..., np.newaxis]  # shape: (samples, timesteps=features, channels=1)
+    X = X[..., np.newaxis]
     y = np.array(y)
 
     skf = StratifiedKFold(n_splits=N_SPLITS, shuffle=True, random_state=42)

@@ -7,7 +7,6 @@ from sklearn.model_selection import train_test_split  # type: ignore
 import matplotlib.pyplot as plt
 import seaborn as sns  # type: ignore
 
-# Constants
 DATA_ROOT = "datasets/json/mediapipe"
 LABELS = {"correct": 1, "wrong": 0}
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -22,8 +21,6 @@ def extract_features_from_json(json_path):
 
     for frame in data:
         keypoints = frame.get("keypoints", [])
-
-        # Ensure 33 keypoints * 3 (x, y, z) = 99
         if len(keypoints) < 33:
             keypoints += [{"x": 0, "y": 0, "z": 0}] * (33 - len(keypoints))
         elif len(keypoints) > 33:
@@ -35,7 +32,6 @@ def extract_features_from_json(json_path):
         features.append(flattened)
 
     return np.mean(features, axis=0) if features else np.zeros(99)
-
 
 def load_dataset():
     X = []
@@ -53,10 +49,8 @@ def load_dataset():
 
     return np.array(X), np.array(y)
 
-
 def count_class_distribution(y, label_dict):
     return {name: int(np.sum(y == value)) for name, value in label_dict.items()}
-
 
 def main():
     os.makedirs(RESULTS_DIR, exist_ok=True)
@@ -65,25 +59,20 @@ def main():
     X, y = load_dataset()
     print(f"✅ Loaded {len(X)} samples.")
 
-    # Split into training and validation
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
     print(f"📊 Training samples: {len(X_train)}, Validation samples: {len(X_val)}")
 
     train_counts = count_class_distribution(y_train, LABELS)
     val_counts = count_class_distribution(y_val, LABELS)
 
-    # Train model
     print("🌲 Training Random Forest...")
     clf = RandomForestClassifier(n_estimators=100, random_state=42)
     clf.fit(X_train, y_train)
-
-    # Predictions
     y_train_pred = clf.predict(X_train)
     y_val_pred = clf.predict(X_val)
     y_total_true = np.concatenate([y_train, y_val])
     y_total_pred = np.concatenate([y_train_pred, y_val_pred])
 
-    # Accuracy scores
     train_acc = accuracy_score(y_train, y_train_pred)
     val_acc = accuracy_score(y_val, y_val_pred)
     total_acc = accuracy_score(y_total_true, y_total_pred)
@@ -94,7 +83,6 @@ def main():
     print("📊 Classification Report:")
     print(classification_report(y_val, y_val_pred, target_names=["wrong", "correct"]))
 
-    # Confusion Matrix
     cm = confusion_matrix(y_val, y_val_pred)
     plt.figure(figsize=(6, 5))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=["wrong", "correct"], yticklabels=["wrong", "correct"])
@@ -107,7 +95,6 @@ def main():
     plt.close()
     print(f"📁 Saved confusion matrix to {cm_path}")
 
-    # Accuracy plot
     plt.figure()
     plt.plot(["Train", "Validation"], [train_acc, val_acc], marker='o')
     plt.title("Training vs Validation Accuracy")
@@ -119,7 +106,6 @@ def main():
     plt.close()
     print(f"📁 Saved accuracy plot to {acc_plot_path}")
 
-    # Write metrics to file
     metrics_path = os.path.join(RESULTS_DIR, "metrics.txt")
     with open(metrics_path, "w") as f:
         f.write(f"Training Accuracy: {train_acc:.4f}\n")
@@ -133,7 +119,6 @@ def main():
         f.write(f"  Wrong: {val_counts['wrong']}\n")
         f.write(f"Total Samples: {len(X)}\n")
     print(f"📁 Saved metrics to {metrics_path}")
-
 
 if __name__ == "__main__":
     main()

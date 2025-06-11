@@ -1,17 +1,13 @@
-# PushFit: Evaluating Pose Estimation and Classification Methods for Push-Up Form Recognition
+# PushFit: PushFit: Push-Up Form Classification via Pose Estimation
 
-**Class**: CS 231N: Deep Learning for Computer Vision  
-**Author**: Ramya Iyer
+**CS 231N: Deep Learning for Computer Vision**  
+**Created by**: Ramya Iyer
 
 ## Overview
 
-PushFit is a real-time, vision-based system designed to analyze human push-up form using pose estimation and classification models. It supports both classical (SVM, Random Forest) and temporal (1D CNN, LSTM, GRU) classification techniques. The system extracts pose keypoints from short push-up videos using MediaPipe Pose and MoveNet, then classifies the form as either correct or incorrect.
+PushFit is a real-time, vision-based system created to analyze human push-up form using pose estimation and classification models. It supports both classical (SVM, Random Forest) and temporal (1D CNN, LSTM, GRU) classification techniques. The system extracts pose keypoints from short push-up videos using MediaPipe Pose and MoveNet, then classifies the form as either correct or incorrect.
 
-## Motivation
-
-Proper exercise form is crucial to avoid injury and improve performance. With home workouts and virtual coaching gaining popularity, real-time feedback tools are more relevant than ever. PushFit offers a lightweight system for analyzing push-up form in live settings such as mobile fitness apps or virtual coaching platforms.
-
-## Pipeline
+## Implemented Pipeline
 
 1. **Input**: Short `.mp4` video of a person performing at least one push-up.
 2. **Pose Estimation**:
@@ -21,6 +17,8 @@ Proper exercise form is crucial to avoid injury and improve performance. With ho
    - **Classical Models**: Support Vector Machines (SVM), Random Forest (RF)
    - **Temporal Models**: 1D CNN, LSTM, GRU
 4. **Output**: Binary label - "correct" or "incorrect" push-up form.
+5. **Extract Features**: Incorrect push-up forms extract features from pose estimation methods.
+6. **Feedback**: Features passed through `Gemini 1.5 Flash` for more precise feedback.
 
 ## Dataset
 

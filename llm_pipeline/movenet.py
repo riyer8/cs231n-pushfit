@@ -57,5 +57,7 @@ def extract_keypoints_to_json(video_path, output_json_path):
         json.dump(keypoints_all, f, indent=2)
 
     print(f"✅ Keypoints saved to: {output_json_path}")
+    return output_json_path
 
-extract_keypoints_to_json(VIDEO_PATH, KEYPOINTS_OUTPUT_PATH)
+# test example
+# extract_keypoints_to_json(VIDEO_PATH, KEYPOINTS_OUTPUT_PATH)

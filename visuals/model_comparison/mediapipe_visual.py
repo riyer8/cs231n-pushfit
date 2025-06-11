@@ -2,7 +2,6 @@ import time
 import cv2  # type: ignore
 import mediapipe as mp  # type: ignore
 import os
-import json
 
 VIDEO_PATH = "datasets/videos/correct/correct1.mp4"
 OUTPUT_VIDEO_PATH = "visuals/mediapipe.mp4"

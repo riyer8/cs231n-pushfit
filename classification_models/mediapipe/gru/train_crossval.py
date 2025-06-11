@@ -8,21 +8,18 @@ from sklearn.metrics import confusion_matrix, accuracy_score  # type: ignore
 from tensorflow.keras import layers, models, preprocessing  # type: ignore
 from tensorflow.keras.callbacks import EarlyStopping  # type: ignore
 
-# --- Setup results directory ---
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 RESULTS_DIR = os.path.join(CURRENT_DIR, "results_gru_kfold")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
-# --- Constants ---
 DATA_ROOT = "datasets/json/mediapipe"
 LABELS = {"correct": 1, "wrong": 0}
-NUM_KEYPOINTS = 33  # MediaPipe keypoints
-FEATURE_DIM = NUM_KEYPOINTS * 3  # x, y, z for each keypoint
-MAX_SEQ_LEN = 50  # Max number of frames per sequence
+NUM_KEYPOINTS = 33
+FEATURE_DIM = NUM_KEYPOINTS * 3
+MAX_SEQ_LEN = 50
 EPOCHS = 100
 BATCH_SIZE = 16
 K_FOLDS = 5
-
 
 def extract_sequence_from_json(json_path):
     with open(json_path, "r") as f:
@@ -37,7 +34,6 @@ def extract_sequence_from_json(json_path):
         sequence.append(flattened)
     return sequence
 
-
 def load_dataset():
     X, y = [], []
     for label in LABELS:
@@ -50,12 +46,10 @@ def load_dataset():
                     y.append(LABELS[label])
     return X, y
 
-
 def pad_sequences(X, maxlen=MAX_SEQ_LEN):
     return preprocessing.sequence.pad_sequences(
         X, maxlen=maxlen, dtype='float32', padding='post', truncating='post', value=0.0
     )
-
 
 def build_gru_model(input_shape):
     model = models.Sequential([
@@ -68,7 +62,6 @@ def build_gru_model(input_shape):
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     return model
 
-
 def plot_confusion(y_true, y_pred, path):
     cm = confusion_matrix(y_true, y_pred)
     plt.figure(figsize=(6, 5))
@@ -79,7 +72,6 @@ def plot_confusion(y_true, y_pred, path):
     plt.tight_layout()
     plt.savefig(path)
     plt.close()
-
 
 def plot_loss(history, path_prefix):
     plt.figure(figsize=(8, 5))
@@ -93,12 +85,10 @@ def plot_loss(history, path_prefix):
     plt.savefig(f"{path_prefix}_loss.png")
     plt.close()
 
-
 def breakdown_by_class(y_array):
     unique, counts = np.unique(y_array, return_counts=True)
     d = dict(zip(unique, counts))
     return d.get(1, 0), d.get(0, 0)
-
 
 def main():
     print("📦 Loading MediaPipe dataset...")
@@ -160,7 +150,6 @@ def main():
         print(f"✅ Fold {fold} complete.")
         fold += 1
 
-    # Save overall results
     avg_train = np.mean(all_train_acc)
     avg_val = np.mean(all_val_acc)
     with open(os.path.join(RESULTS_DIR, "summary.txt"), "w") as f:
@@ -171,7 +160,6 @@ def main():
         f.write(str(total_cm))
 
     print(f"\n📊 All results saved in {RESULTS_DIR}")
-
 
 if __name__ == "__main__":
     main()

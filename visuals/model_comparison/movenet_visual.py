@@ -1,7 +1,6 @@
 import time
 import cv2  # type: ignore
 import os
-import json
 import numpy as np
 import tensorflow as tf  # type: ignore
 import tensorflow_hub as hub  # type: ignore

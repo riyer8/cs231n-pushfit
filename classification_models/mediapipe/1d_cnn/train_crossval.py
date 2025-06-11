@@ -6,11 +6,10 @@ from tensorflow.keras.models import Sequential  # type: ignore
 from tensorflow.keras.layers import Conv1D, Dense, Flatten, Dropout, MaxPooling1D, BatchNormalization  # type: ignore
 from tensorflow.keras.callbacks import EarlyStopping  # type: ignore
 from sklearn.model_selection import StratifiedKFold  # type: ignore
-from sklearn.metrics import confusion_matrix, classification_report, accuracy_score  # type: ignore
+from sklearn.metrics import confusion_matrix # type: ignore
 import matplotlib.pyplot as plt
 import seaborn as sns  # type: ignore
 
-# Constants
 DATA_ROOT = "datasets/json/mediapipe"
 LABELS = {"correct": 1, "wrong": 0}
 SEQ_LEN = 30
@@ -23,7 +22,6 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 RESULTS_DIR = os.path.join(CURRENT_DIR, "results")
 os.makedirs(RESULTS_DIR, exist_ok=True)
-
 
 def extract_sequence_from_json(json_path, seq_len=SEQ_LEN):
     with open(json_path, "r") as f:
@@ -46,7 +44,6 @@ def extract_sequence_from_json(json_path, seq_len=SEQ_LEN):
 
     return np.array(sequence)
 
-
 def load_dataset():
     X = []
     y = []
@@ -60,7 +57,6 @@ def load_dataset():
                     X.append(seq)
                     y.append(LABELS[label])
     return np.array(X), np.array(y)
-
 
 def build_model(input_shape):
     model = Sequential([
@@ -84,7 +80,6 @@ def build_model(input_shape):
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
     return model
-
 
 def plot_confusion_matrix(y_true, y_pred, filename):
     cm = confusion_matrix(y_true, y_pred)

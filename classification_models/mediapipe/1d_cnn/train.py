@@ -10,20 +10,16 @@ from sklearn.metrics import confusion_matrix, classification_report, accuracy_sc
 import matplotlib.pyplot as plt
 import seaborn as sns # type: ignore
 
-# Constants
 DATA_ROOT = "datasets/json/mediapipe"
 LABELS = {"correct": 1, "wrong": 0}
-SEQ_LEN = 30       # number of frames per sample
+SEQ_LEN = 30
 NUM_KEYPOINTS = 33
-NUM_FEATURES = NUM_KEYPOINTS * 3  # x, y, z
+NUM_FEATURES = NUM_KEYPOINTS * 3
 EPOCHS = 100
 BATCH_SIZE = 16
-
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-
 RESULTS_DIR = os.path.join(CURRENT_DIR, "results")
 os.makedirs(RESULTS_DIR, exist_ok=True)
-
 
 def extract_sequence_from_json(json_path, seq_len=SEQ_LEN):
     with open(json_path, "r") as f:
@@ -37,9 +33,7 @@ def extract_sequence_from_json(json_path, seq_len=SEQ_LEN):
             flattened.extend([kp["x"], kp["y"], kp["z"]])
         if len(flattened) == NUM_FEATURES:
             sequence.append(flattened)
-    # Pad or truncate sequence to seq_len
     if len(sequence) < seq_len:
-        # Pad with zeros
         padding = [np.zeros(NUM_FEATURES)] * (seq_len - len(sequence))
         sequence.extend(padding)
     else:
@@ -95,7 +89,6 @@ def plot_confusion_matrix(y_true, y_pred, filename):
     plt.close()
 
 def plot_training_history(history, filename_prefix):
-    # Loss plot
     plt.figure()
     plt.plot(history.history['loss'], label='Train Loss')
     plt.plot(history.history['val_loss'], label='Val Loss')
@@ -106,7 +99,6 @@ def plot_training_history(history, filename_prefix):
     plt.savefig(f"{filename_prefix}_loss.png")
     plt.close()
 
-    # Accuracy plot
     plt.figure()
     plt.plot(history.history['accuracy'], label='Train Accuracy')
     plt.plot(history.history['val_accuracy'], label='Val Accuracy')
@@ -136,7 +128,6 @@ def main():
     X, y = load_dataset()
     print(f"✅ Loaded {len(X)} samples.")
 
-    # Split train/val (80/20)
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
     print(f"Training samples: {len(X_train)}, Validation samples: {len(X_val)}")
@@ -155,34 +146,25 @@ def main():
 
     print("✅ Training complete.")
 
-    # Evaluate on validation set
     val_loss, val_acc = model.evaluate(X_val, y_val, verbose=0)
     train_loss, train_acc = model.evaluate(X_train, y_train, verbose=0)
 
-    # Predict for confusion matrix
     y_val_pred_prob = model.predict(X_val)
     y_val_pred = (y_val_pred_prob > 0.5).astype(int).flatten()
 
     print("📊 Classification Report (Validation):")
     print(classification_report(y_val, y_val_pred, target_names=["wrong", "correct"]))
 
-    # Plot confusion matrix
     cm_path = os.path.join(RESULTS_DIR, "confusion_matrix.png")
     plot_confusion_matrix(y_val, y_val_pred, cm_path)
-
-    # Plot training history
     plot_training_history(history, os.path.join(RESULTS_DIR, "training"))
 
-    # Counts by class in train/val
     train_counts = np.bincount(y_train, minlength=2)
     val_counts = np.bincount(y_val, minlength=2)
 
-    # Total accuracy on combined set
     y_all_pred_prob = model.predict(X)
     y_all_pred = (y_all_pred_prob > 0.5).astype(int).flatten()
     total_acc = accuracy_score(y, y_all_pred)
-
-    # Save results text file
     txt_path = os.path.join(RESULTS_DIR, "results.txt")
     save_results_txt(train_counts, val_counts, train_acc, val_acc, total_acc, txt_path)
 
