@@ -87,3 +87,11 @@ All videos are in `.mp4` format. Pose keypoints are extracted and stored in `.js
 # CS 231N Poster
 
 ![CS 231N Final Poster](visuals/CS%20231N%20Poster.jpg)
+
+### Additional Notes
+
+Tensorflow model not rendering, run this:
+
+```
+rm -rf /var/folders/ct/h6jfsjs122zcn6rz6mz_7pfc0000gn/T/tfhub_modules/
+```

@@ -8,9 +8,6 @@ import tensorflow as tf  # type: ignore
 import tensorflow_hub as hub  # type: ignore
 
 VIDEO_PATH = "llm_pipeline/wrong3.mp4"
-KEYPOINTS_OUTPUT_PATH = "llm_pipeline/keypoints_wrong3.json"
-
-os.makedirs(os.path.dirname(KEYPOINTS_OUTPUT_PATH), exist_ok=True)
 
 # Load the MoveNet model
 model = hub.load("https://tfhub.dev/google/movenet/singlepose/thunder/4")
@@ -20,7 +17,15 @@ def preprocess_frame(frame):
     img = tf.cast(img, dtype=tf.int32)
     return img
 
-def extract_keypoints_to_json(video_path, output_json_path):
+def video_to_json_path(video_path: str) -> str:
+    dir_path, filename = os.path.split(video_path)
+    name_without_ext = os.path.splitext(filename)[0]
+    keypoints_filename = f"keypoints_{name_without_ext}.json"
+    return os.path.join(dir_path, keypoints_filename)
+
+def extract_keypoints_to_json(video_path):
+    output_json_path = video_to_json_path(video_path)
+    os.makedirs(os.path.dirname(output_json_path), exist_ok=True)
     cap = cv2.VideoCapture(video_path)
     keypoints_all = []
 

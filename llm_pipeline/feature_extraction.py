@@ -24,9 +24,7 @@ ANGLES_TO_COMPUTE = [
 ]
 
 VIDEO_PATH = "llm_pipeline/wrong3.mp4"
-KEYPOINTS_OUTPUT_PATH = "llm_pipeline/keypoints_wrong3.json"
 
-# angle between these three points
 def calculate_angle(a, b, c):
     a = np.array(a)
     b = np.array(b)
@@ -69,14 +67,66 @@ def compute_angles_over_video(all_keypoints):
     }
     return averaged
 
-def write_analysis_to_txt(angles, output_txt_path):
+def compute_additional_metrics(all_keypoints):
+    left_elbow_angles = []
+    right_elbow_angles = []
+    spine_deviation_list = []
+    rep_threshold = 40
+    pushup_reps = 0
+    rep_state = False
+
+    for frame in all_keypoints:
+        if all(k in frame for k in ["left_shoulder", "left_elbow", "left_wrist"]):
+            angle = calculate_angle(frame["left_shoulder"], frame["left_elbow"], frame["left_wrist"])
+            left_elbow_angles.append(angle)
+        if all(k in frame for k in ["right_shoulder", "right_elbow", "right_wrist"]):
+            angle = calculate_angle(frame["right_shoulder"], frame["right_elbow"], frame["right_wrist"])
+            right_elbow_angles.append(angle)
+
+        if all(k in frame for k in ["left_shoulder", "right_shoulder", "left_hip", "right_hip"]):
+            shoulder_center = np.mean([frame["left_shoulder"], frame["right_shoulder"]], axis=0)
+            hip_center = np.mean([frame["left_hip"], frame["right_hip"]], axis=0)
+            delta = np.array(hip_center) - np.array(shoulder_center)
+            angle = abs(degrees(atan2(delta[1], delta[0])))
+            spine_deviation_list.append(angle)
+
+        if "right_shoulder" in frame and "right_elbow" in frame and "right_wrist" in frame:
+            angle = calculate_angle(frame["right_shoulder"], frame["right_elbow"], frame["right_wrist"])
+            if angle < rep_threshold and not rep_state:
+                rep_state = True
+            elif angle >= rep_threshold and rep_state:
+                pushup_reps += 1
+                rep_state = False
+
+    metrics = {
+        "left_elbow_range": round(max(left_elbow_angles) - min(left_elbow_angles), 2) if left_elbow_angles else None,
+        "right_elbow_range": round(max(right_elbow_angles) - min(right_elbow_angles), 2) if right_elbow_angles else None,
+        "avg_spine_deviation": round(np.mean(spine_deviation_list), 2) if spine_deviation_list else None,
+        "reps_count": pushup_reps
+    }
+    return metrics
+
+def write_analysis_to_txt(angles, output_txt_path, metrics=None):
     with open(output_txt_path, "w") as f:
         f.write("⚠️ Push-up technique analysis (Incorrect form detected)\n\n")
+
+        f.write("=== Joint Angles (Average) ===\n")
         for joint, angle in angles.items():
             if angle is not None:
                 f.write(f"{joint} angle: {angle} degrees\n")
             else:
                 f.write(f"{joint} angle: Not available (missing keypoints)\n")
+
+        if metrics:
+            f.write("\n=== Summary Metrics ===\n")
+            if metrics["left_elbow_range"] is not None:
+                f.write(f"Left elbow angle range: {metrics['left_elbow_range']} degrees\n")
+            if metrics["right_elbow_range"] is not None:
+                f.write(f"Right elbow angle range: {metrics['right_elbow_range']} degrees\n")
+            if metrics["avg_spine_deviation"] is not None:
+                f.write(f"Average spine deviation: {metrics['avg_spine_deviation']} degrees\n")
+            f.write(f"Estimated number of push-up reps: {metrics['reps_count']}\n")
+
     print(f"📁 Saved analysis to {output_txt_path}")
 
 def analyze_video_pose(json_path, output_txt_path):
@@ -86,14 +136,21 @@ def analyze_video_pose(json_path, output_txt_path):
         print("🚨 Incorrect push-up detected. Extracting details...")
         keypoints = extract_keypoints_from_json(json_path)
         angles = compute_angles_over_video(keypoints)
-        write_analysis_to_txt(angles, output_txt_path)
+        metrics = compute_additional_metrics(keypoints)
+        write_analysis_to_txt(angles, output_txt_path, metrics=metrics)
     else:
         print("✅ Push-up form is correct. No further analysis needed.")
     
     return output_txt_path
 
-if __name__ == "__main__":
-    JSON_PATH = extract_keypoints_to_json(VIDEO_PATH, KEYPOINTS_OUTPUT_PATH)
-    OUTPUT_TXT = "llm_pipeline/feedback_wrong3.txt"
-    os.makedirs(os.path.dirname(OUTPUT_TXT), exist_ok=True)
-    output_txt_path = analyze_video_pose(JSON_PATH, OUTPUT_TXT)
+def keypoints_to_feedback_path(keypoints_path: str) -> str:
+    dir_path, filename = os.path.split(keypoints_path)
+    name_without_ext = os.path.splitext(filename)[0]
+
+    if name_without_ext.startswith("keypoints_"):
+        base_name = name_without_ext[len("keypoints_"):]
+    else:
+        base_name = name_without_ext
+
+    feedback_filename = f"feedback_{base_name}.txt"
+    return os.path.join(dir_path, feedback_filename)

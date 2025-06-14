@@ -2,10 +2,13 @@ import google.generativeai as genai  # type: ignore
 from dotenv import load_dotenv
 import os
 from feature_extraction import analyze_video_pose
+from classification import predict_single_video
+from math import atan2, degrees
+from movenet import extract_keypoints_to_json
+from feature_extraction import keypoints_to_feedback_path
 
 DEFAULT_MODEL = "models/gemini-1.5-flash"
 PROMPT_FILE = "llm_pipeline/prompt_engineering.txt"
-OUTPUT_FILE = "llm_pipeline/output.txt"
 
 load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
@@ -27,7 +30,7 @@ def generate_feedback(prompt_text):
     response = model.generate_content(prompt_text)
     return response.text.strip()
 
-def gemini_integration(feedback_file):
+def gemini_integration(feedback_file, output_file):
     print("📄 Loading input files...")
     prompt_text = load_text(PROMPT_FILE)
     feedback_text = load_text(feedback_file)
@@ -38,11 +41,16 @@ def gemini_integration(feedback_file):
     response_text = generate_feedback(combined_prompt)
 
     print("💾 Saving output to output.txt")
-    save_text(OUTPUT_FILE, response_text)
+    save_text(output_file, response_text)
 
     print("✅ Done!")
 
-if __name__ == "__main__":
-    JSON_PATH = "llm_pipeline/keypoints_wrong3.json"
-    OUTPUT_TXT = "llm_pipeline/feedback_wrong3.txt"
-    TXT_FILE = analyze_video_pose(JSON_PATH, OUTPUT_TXT)
+def end_to_end_integration(video_path):
+    json_path = extract_keypoints_to_json(video_path)
+    feedback_txt = keypoints_to_feedback_path(json_path)
+    txt_file = analyze_video_pose(json_path, feedback_txt)
+    output_file = "llm_pipeline/output.txt"
+    gemini_integration(txt_file, output_file)
+
+VIDEO_PATH = "llm_pipeline/wrong3.mp4"
+end_to_end_integration(VIDEO_PATH) # produced in llm_pipeline/output.txt

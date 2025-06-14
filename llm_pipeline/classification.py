@@ -7,7 +7,6 @@ from movenet import extract_keypoints_to_json
 # static model path
 MODEL_PATH = "classification_models/movenet/random_forest/results/random_forest_model.joblib"
 VIDEO_PATH = "llm_pipeline/wrong3.mp4"
-KEYPOINTS_OUTPUT_PATH = "llm_pipeline/keypoints_wrong3.json"
 
 def extract_features_from_json(json_path):
     with open(json_path, "r") as f:
@@ -40,6 +39,6 @@ def predict_single_video(json_path):
     print(f"🧠 Prediction: {label}")
     return label
 
-if __name__ == "__main__":
-    JSON_PATH = extract_keypoints_to_json(VIDEO_PATH, KEYPOINTS_OUTPUT_PATH)
-    predict_single_video(JSON_PATH)
+# test example
+# JSON_PATH = extract_keypoints_to_json(VIDEO_PATH)
+# predict_single_video(JSON_PATH)
